@@ -1,0 +1,580 @@
+<!doctype html>
+<html lang="en-gb" class="no-js">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<title>SafeSky- A Revolutionary Aerial Hazard Monitoring System.</title>
+	<meta name="description" content="">
+	<meta name="author">
+	<link href="search_bar.css" rel="stylesheet" type="text/css" media="all">
+	<link rel="stylesheet" href="css/bootstrap.min.css" />
+	<link rel="stylesheet" type="text/css" href="css/isotope.css" media="screen" />
+	<link rel="stylesheet" href="css/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+	<link rel="stylesheet" type="text/css" href="css/da-slider.css" />
+	<link rel="stylesheet" href="css/styles.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+	<link href="font/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+</head>
+
+<body>
+
+	<div class="loader"></div>
+
+	<header class="header">
+		<div class="container">
+			<nav class="navbar navbar-inverse" role="navigation">
+				<div class="navbar-header">
+					<button type="button" id="nav-toggle" class="navbar-toggle" data-toggle="collapse"
+						data-target="#main-nav">
+						<span class="sr-only">Toggle navigation</span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a href="#" class="navbar-brand scroll-top logo"><b>Safe</b>Sky</a>
+				</div>
+				<!--/.navbar-header-->
+				<div id="main-nav" class="collapse navbar-collapse">
+					<ul class="nav navbar-nav" id="mainNav">
+						<li class="active"><a href="#home" class="scroll-link">Home</a></li>
+						<li><a href="#aboutUs" class="scroll-link">About Us</a></li>
+						<li><a href="#services" class="scroll-link">Services</a></li>
+						<li><a href="#team" class="scroll-link">Team</a></li>
+						<li><a href="#contactUs" class="scroll-link">Contact Us</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</header>
+	<div id="#top"></div>
+	<section id="home">
+		<div id="myCarousel" class="carousel slide" data-ride="carousel">
+			<!-- Indicators -->
+			<ol class="carousel-indicators">
+				<li data-target="#myCarousel" data-slide-to="0" class=""></li>
+				<li data-target="#myCarousel" data-slide-to="1" class="active"></li>
+				<li data-target="#myCarousel" data-slide-to="2" class=""></li>
+			</ol>
+			<div class="carousel-inner">
+				<div class="item">
+					<img alt="First slide" src="images/slide-2.jpg">
+					<div class="container">
+						<div class="carousel-caption">
+							<h1>Polluted Weather</h1>
+							<h3>Residential areas near factories has high AQI</h3>
+						</div>
+					</div>
+				</div>
+
+				<div class="item active">
+					<img alt="Second slide" src="images/slide-1.jpg">
+					<div class="container">
+						<div class="carousel-caption">
+							<h1>Hot, Sunny Weather</h1>
+							<h3>Green Area has less AQI</h3>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="item">
+					<img alt="Third slide" src="images/slide-3.avif">
+					<div class="container">
+						<div class="carousel-caption">
+							<h1>Cool, Snowy Weather</h1>
+							<h3>Snowy Areas has moderate AQI</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<a class="left carousel-control" href="#myCarousel" data-slide="prev"><span
+					class="glyphicon glyphicon-chevron-left"><i class="fa-solid fa-circle-chevron-left"></i></span></a>
+			<a class="right carousel-control" href="#myCarousel" data-slide="next"><span
+					class="glyphicon glyphicon-chevron-right"><i
+						class="fa-solid fa-circle-chevron-right"></i></span></a>
+		</div>
+
+		<div class="bg-image">
+			<p
+				style="text-align: center; padding: 12px; margin: 10px 10px 10px 40%; font-size: xx-large; display: inline-block; color: black;">
+				Weather Report</p>
+			<i class="fa-solid fa-cloud fa-2x" style="color: #80B421;"></i>
+			<form id="cityForm">
+				<label for="cityInput">Enter Your City :</label>
+				<input type="text" id="cityInput" name="city" placeholder="Chittoor" required>
+				<button type="submit">Get Weather</button>
+			</form>
+			<div class="weather-details">
+				<div class="weather-div">
+					<div id="weatherInfo">
+						<h4>Today's Weather</h4>
+						<p style="color: black; font-weight: 800;">Temperature: <span id="temperature"></span></p>
+						<p style="color: black; font-weight: 800;">Feels Like: <span id="feels-like"></span></p>
+						<p style="color: black; font-weight: 800;">Humidity: <span id="humidity"></span></p>
+						<p style="color: black; font-weight: 800;">Precipitation: <span id="precipitation"></span></p>
+						<p style="color: black; font-weight: 800;">Wind Speed: <span id="wind-speed"></span></p>
+						<p style="color: black; font-weight: 800;">Wind Direction: <span id="wind-direction"></span></p>
+					</div>
+				</div>
+				<div class="forecast">
+					<table>
+					</table>
+				</div>
+				<div id="map"></div>
+			</div>
+
+			<div class="aqi-container">
+				<p
+					style="text-align: center; padding: 12px; margin: 10px 10px 10px 40%; font-size: xx-large; display: inline-block; color: white;">
+					Check AQI</p>
+				<svg xmlns="http://www.w3.org/2000/svg" height="64" width="64" viewBox="0 0 640 512"
+					style="font-size: 2em; fill: rgb(0, 0, 0); margin: -22px 0px; padding: 5px;">
+					<path
+						d="M320 64c-27.2 0-53.8 8-76.4 23.1l-37.1 24.8c-15.8 10.5-34.3 16.1-53.3 16.1H144 128 56c-30.9 0-56 25.1-56 56v85c0 55.1 37.5 103.1 90.9 116.4l108 27C233.8 435 275.4 448 320 448s86.2-13 121.1-35.5l108-27C602.5 372.1 640 324.1 640 269V184c0-30.9-25.1-56-56-56H512 496h-9.2c-19 0-37.5-5.6-53.3-16.1L396.4 87.1C373.8 72 347.2 64 320 64zM132.3 346.3l-29.8-7.4C70.5 330.9 48 302.1 48 269V184c0-4.4 3.6-8 8-8H96v48c0 45.1 13.4 87.2 36.3 122.3zm405.1-7.4l-29.8 7.4c23-35.2 36.3-77.2 36.3-122.3V176h40c4.4 0 8 3.6 8 8v85c0 33-22.5 61.8-54.5 69.9zM192 208c0-8.8 7.2-16 16-16H432c8.8 0 16 7.2 16 16s-7.2 16-16 16H208c-8.8 0-16-7.2-16-16zm16 48H432c8.8 0 16 7.2 16 16s-7.2 16-16 16H208c-8.8 0-16-7.2-16-16s7.2-16 16-16zm16 80c0-8.8 7.2-16 16-16H400c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-8.8 0-16-7.2-16-16z" />
+				</svg>
+				<div id="aqi">
+					<div class="table-container aqi-levels" style="float: left;">
+						<table>
+							<thead>
+								<tr>
+									<th>AQI Range</th>
+									<th>Air Pollution Level</th>
+									<th>Health Implications</th>
+									<th>Cautionary Statement (for PM 2.5)</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>0 - 50</td>
+									<td>Good</td>
+									<td>Air quality is considered satisfactory, and air pollution poses little or no
+										risk
+									</td>
+									<td>None</td>
+								</tr>
+								<tr>
+									<td>51 - 100</td>
+									<td>Moderate</td>
+									<td>Air quality is acceptable; however, for some pollutants there may be a moderate
+										health
+										concern for a very small number of people who are unusually sensitive to air
+										pollution.
+									</td>
+									<td>Active children and adults, and people with respiratory disease, such as asthma,
+										should
+										limit prolonged outdoor exertion.</td>
+								</tr>
+								<tr>
+									<td>101-150</td>
+									<td>Unhealthy for Sensitive Groups</td>
+									<td>Members of sensitive groups may experience health effects. The general public is
+										not
+										likely to be affected.</td>
+									<td>Active children and adults, and people with respiratory disease, such as asthma,
+										should
+										limit prolonged outdoor exertion.</td>
+								</tr>
+								<tr>
+									<td>151-200</td>
+									<td>Unhealthy</td>
+									<td>Everyone may begin to experience health effects; members of sensitive groups may
+										experience more serious health effects.</td>
+									<td>Active children and adults, and people with respiratory disease, such as asthma,
+										should
+										avoid prolonged outdoor exertion; everyone else, especially children, should
+										limit
+										prolonged outdoor exertion.</td>
+								</tr>
+								<tr>
+									<td>201-300</td>
+									<td>Very Unhealthy</td>
+									<td>Health warnings of emergency conditions. The entire population is more likely to
+										be
+										affected.</td>
+									<td>Active children and adults, and people with respiratory disease, such as asthma,
+										should
+										avoid all outdoor exertion; everyone else, especially children, should limit
+										outdoor
+										exertion.</td>
+								</tr>
+								<tr>
+									<td>300+</td>
+									<td>Hazardous</td>
+									<td>Health alert: everyone may experience more serious health effects.</td>
+									<td>Everyone should avoid all outdoor exertion.</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+					<div class="float-right">
+						<form id="AQI-form">
+							<label for="cityInput" style="color: white;">Enter Your City:</label>
+							<input type="text" id="city2Input" name="city" placeholder="Chittoor" required>
+							<button type="submit">Find AQI</button>
+						</form>
+
+						<div class="table-container aqi-table" style="position: relative;">
+							<table id="aqiTableBody">
+								<tbody>
+								</tbody>
+							</table>
+							<p id="aqi-result-bg"
+								style="position: absolute; font-size: 30px; background-color: red; color: white; top: 110%; padding: 5px 10px;">
+								<span id="aqi-result"></span>
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+
+			<button id="warningButton">Warning</button>
+
+			<div class="overlay" id="warningOverlay">
+				<div class="warningContent">
+					<img src="/images/hazardous-icon.png" alt="Warning Signal">
+					<p>Hazardous Environment!</p>
+					<p>Alert! Immediate danger in your area.
+						Stay Indoor and wait for further instructions.
+					</p>
+				</div>
+			</div>
+
+			<div class="hazard-monitoring">
+				<div class="hazard-container">
+					<span>
+						<p
+							style="text-align: left; padding: 12px; margin: 10px 10px 10px 10px; font-size: xx-large; display: inline-block; color: black;">
+							Hazard Monitoring</p>
+						<i class="fa fa-solid fa-exclamation-triangle fa-2x" style="color: #80B421;"></i>
+						<p>Contribute to the safety of your community: Upload an image of your nearby areas to assess
+							potential hazards.</p>
+					</span>
+					<form id="uploadForm" enctype="multipart/form-data">
+						<p style="font-size: medium;">Select an image to upload:</p>
+						<input type="file" id="fileInput" onchange="previewImage(event)" />
+						<button type="button" id="uploadButton">Upload</button>
+					</form>
+					<div id="statusMessage">Result</div>
+				</div>
+			</div>
+
+		</div>
+
+		</div>
+
+
+		<section id="aboutUs" class="page-section darkBg pDark pdingBtm30">
+			<div class="container">
+				<div class="heading text-center">
+					<!-- Heading -->
+					<h2>About Us</h2>
+					<p>Our team is dedicated to developing a cutting-edge software solution that is pivotal in ensuring
+						industry compliance with government-mandated safety standards. We have created a robust system
+						that
+						establishes the benchmark for safety protocols, particularly in the realm of aerial hazard
+						monitoring. Our goal is to empower industries to effectively meet regulatory requirements and
+						elevate safety measures to new heights.</p>
+				</div>
+
+				<div class="row">
+					<div class="col-md-4 col-sm-4">
+						<h3><i class="fa fa-desktop color"></i> &nbsp; What we do?</h3>
+						<!-- Paragraph -->
+						<p>We specialize in developing and implementing a software solution that is instrumental in
+							enabling
+							industries to comply with government-mandated safety standards. Our focus is on providing a
+							robust system that sets the gold standard for safety protocols, particularly in the area of
+							aerial hazard monitoring. By doing so, we aim to enhance safety measures and ensure that
+							industries can effectively meet regulatory requirements.</p>
+					</div>
+					<div class="col-md-4 col-sm-4">
+						<!-- Heading -->
+						<h3><i class="fa fa-cloud color"></i> &nbsp;Why choose us?</h3>
+						<!-- Paragraph -->
+						<p class="text-center">Our team stands out for our expertise in developing a software solution
+							that
+							is at the forefront
+							of ensuring industry compliance with safety standards. We are dedicated to providing a
+							robust
+							system that enables industries to meet regulatory requirements effectively, particularly in
+							the
+							critical area of aerial hazard monitoring. By choosing us, industries can benefit from our
+							commitment to enhancing safety measures and ensuring compliance with government-mandated
+							safety
+							standards.</p>
+					</div>
+					<div class="col-md-4 col-sm-4">
+						<!-- Heading -->
+						<h3><i class="fa fa-home"></i> &nbsp;Where are we?</h3>
+						<!-- Paragraph -->
+						<p>Our team is based at IIIT Sri City. However, our software solution is
+							designed
+							to be accessible and applicable to industries across various locations, enabling them to
+							enhance
+							safety measures and comply with government-mandated safety standards regardless of their
+							geographical location.</p>
+					</div>
+				</div>
+			</div>
+			<!--/.container-->
+		</section>
+
+		<section id="services" class="page-section">
+			<div class="container">
+				<div class="heading text-center">
+					<!-- Heading -->
+					<h2>Services</h2>
+					<p>Revolutionary Aerial Hazard Monitoring System
+					</p>
+				</div>
+				<div class="row">
+
+					<!-- item -->
+					<div class="col-md-4 text-center">
+						<i class="fa fa-solid fa-cloud fa-2x circle"></i>
+						<h3>Weather <span class="id-color">Report</span></h3>
+						<p>Check Weather Report of your locality.</p>
+					</div><!-- end:-->
+
+					<!-- item -->
+					<div class="col-md-4 text-center">
+						<svg xmlns="http://www.w3.org/2000/svg" height="64" width="64" viewBox="0 0 640 512"
+							style="font-size: 2em; color: inherit;">
+							<path
+								d="M320 64c-27.2 0-53.8 8-76.4 23.1l-37.1 24.8c-15.8 10.5-34.3 16.1-53.3 16.1H144 128 56c-30.9 0-56 25.1-56 56v85c0 55.1 37.5 103.1 90.9 116.4l108 27C233.8 435 275.4 448 320 448s86.2-13 121.1-35.5l108-27C602.5 372.1 640 324.1 640 269V184c0-30.9-25.1-56-56-56H512 496h-9.2c-19 0-37.5-5.6-53.3-16.1L396.4 87.1C373.8 72 347.2 64 320 64zM132.3 346.3l-29.8-7.4C70.5 330.9 48 302.1 48 269V184c0-4.4 3.6-8 8-8H96v48c0 45.1 13.4 87.2 36.3 122.3zm405.1-7.4l-29.8 7.4c23-35.2 36.3-77.2 36.3-122.3V176h40c4.4 0 8 3.6 8 8v85c0 33-22.5 61.8-54.5 69.9zM192 208c0-8.8 7.2-16 16-16H432c8.8 0 16 7.2 16 16s-7.2 16-16 16H208c-8.8 0-16-7.2-16-16zm16 48H432c8.8 0 16 7.2 16 16s-7.2 16-16 16H208c-8.8 0-16-7.2-16-16s7.2-16 16-16zm16 80c0-8.8 7.2-16 16-16H400c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-8.8 0-16-7.2-16-16z" />
+						</svg>
+						<h3>Check <span class="id-color">AQI</span></h3>
+						<p>Check Air Quality Index of your surrounding.</p>
+					</div><!-- end: -->
+
+					<!-- item -->
+					<div class="col-md-4 text-center">
+						<i class="fa fa-solid fa-exclamation-triangle fa-2x circle"></i>
+						<h3>Hazard <span class="id-color">Monitoring</span></h3>
+						<p>Check Hazardous conditions through camera.</p>
+					</div><!-- end:-->
+				</div>
+			</div>
+			<!--/.container-->
+		</section>
+
+		<section id="team" class="page-section">
+			<div class="container">
+				<div class="heading text-center">
+					<!-- Heading -->
+					<h2>Team Vishisht</h2>
+					<p>Our team is creating a prototype of areal monitoring to detect hazardous locations near
+						industries.
+					</p>
+					<div class="team-details" style="display: flex; justify-content: space-between;">
+						<div class="member member1">
+							<h3 style="color: rgb(156, 153, 153); margin: 2% 20%;">Mohammed Khalid</h3>
+							<p>UG2, IIIT Sri City</p>
+							<p>Backend Developer</p>
+						</div>
+						<div class="member member2">
+							<h3 style="color: rgb(156, 153, 153); margin: 2% 20%;">Abhishek Sahay</h3>
+							<p>UG2, IIIT Sri City</p>
+							<p>Website Developer</p>
+						</div>
+						<div class="member member3">
+							<h3 style="color: rgb(156, 153, 153); margin: 2% 20%;">Mamatha Krishna</h3>
+							<p>UG2, IIIT Sri City</p>
+							<p>ChatBot Developer</p>
+						</div>
+						<div class="member member4">
+							<h3 style="color: rgb(156, 153, 153); margin: 2% 20%;">Rohan Vinkare</h3>
+							<p>UG2, IIIT Sri City</p>
+							<p>App Developer</p>
+						</div>
+						<div class="member member5">
+							<h3 style="color: rgb(156, 153, 153); margin: 2% 20%;">Sujal Awargand</h3>
+							<p>UG2, IIIT Sri City</p>
+							<p>Integration Developer</p>
+						</div>
+						<div class="member member6">
+							<h3 style="color: rgb(156, 153, 153); margin: 2% 20%;">Prajwal Kumar</h3>
+							<p>UG2, IIIT Sri City</p>
+							<p>Machine Learning</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section id="contactUs" class="page-section">
+			<div class="container">
+
+				<div class="row">
+					<div class="heading text-center">
+						<!-- Heading -->
+						<h2>Contact Us</h2>
+					</div>
+				</div>
+
+				<div class="row mrgn30">
+					<div class="col-sm-4">
+						<h4>Address:</h4>
+						<address>
+							IIIT Sri City<br>
+							630, Gnan Marg Sri City,<br>
+							Sathyavedu, <br>
+							Andhra Pradesh. <br>
+							Pin: 517646 <br>
+						</address>
+						<h4>Phone:</h4>
+						<address>
+							+91 96967 88599<br>
+						</address>
+					</div>
+					<form method="post" action="#" id="contactfrm" role="form">
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label for="name">Name</label>
+								<input type="text" class="form-control" name="name" id="name" placeholder="Enter Name"
+									title="Please enter your name (at least 2 characters)">
+							</div>
+							<div class="form-group">
+								<label for="email">Email</label>
+								<input type="email" class="form-control" name="email" id="email"
+									placeholder="Enter E-mail" title="Please enter a valid email address">
+							</div>
+							<div class="form-group">
+								<label for="phone">Phone</label>
+								<input name="phone" class="form-control required digits" type="tel" id="phone" size="30"
+									value="" placeholder="Enter Phone"
+									title="Please enter a valid phone number (at least 10 characters)">
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label for="comments">Comments</label>
+								<textarea name="comment" class="form-control" id="comments" cols="3" rows="5"
+									placeholder="Enter your message…"
+									title="Please enter your message (at least 10 characters)"></textarea>
+							</div>
+							<button name="submit" type="submit" class="btn btn-lg btn-primary" id="submit">
+								Submit
+							</button>
+							<div class="result"></div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+
+		<!-- Infinite Scoll Carousel -->
+		<div class="logos">
+			<div class="logos-slide">
+				<img src="infinite-logo-carousel/logos/aqi.png" alt="">
+				<img src="infinite-logo-carousel/logos/breath.png" alt="">
+				<img src="infinite-logo-carousel/logos/logo.png" alt="">
+				<img src="infinite-logo-carousel/logos/camera.png" alt="">
+				<img src="infinite-logo-carousel/logos/clouds.png" alt="">
+				<img src="infinite-logo-carousel/logos/eye.png" alt="">
+				<img src="infinite-logo-carousel/logos/factories.png" alt="">
+				<img src="infinite-logo-carousel/logos/green-industries.png" alt="">
+				<img src="infinite-logo-carousel/logos/safesky.png" alt="">
+			</div>
+			<div class="logos-slide">
+				<img src="infinite-logo-carousel/logos/aqi.png" alt="">
+				<img src="infinite-logo-carousel/logos/breath.png" alt="">
+				<img src="infinite-logo-carousel/logos/logo.png" alt="">
+				<img src="infinite-logo-carousel/logos/camera.png" alt="">
+				<img src="infinite-logo-carousel/logos/safesky.png" alt="">
+				<img src="infinite-logo-carousel/logos/clouds.png" alt="">
+				<img src="infinite-logo-carousel/logos/eye.png" alt="">
+				<img src="infinite-logo-carousel/logos/factories.png" alt="">
+				<img src="infinite-logo-carousel/logos/green-industries.png" alt="">
+			</div>
+		</div>
+
+		<footer class="page-section">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-4 col-sm-6 about">
+						<a href="#" class="logoDark">
+							<h4>SafeSky</h4>
+						</a>
+						<p>Led by multidisciplinary undergraduates, SafeSky revolutionizes aerial hazard monitoring,
+							enforcing industry safety standards. This innovative software sets benchmarks for safety
+							protocols, ensuring regulatory compliance and a secure operational landscape, redefining
+							safety
+							in diverse industries.</p>
+						<ul class="socialIcons">
+							<li><a href="https://www.linkedin.com/in/abhi5hek001" class="LinkedIn" target="_blank"><i
+										class="fa fa-linkedin-square fa-lg"></i></a></li>
+							<li><a href="mailto:safesky.by.vishist@gmail.com" class="googleIcon" target="_blank"><i
+										class="fa fa-google-plus-square fa-lg"></i></a></li>
+							<li><a href="https://www.github.com/abhi5hek001" class="Github" target="_blank"><i
+										class="fa fa-github-square fa-lg"></i></a></li>
+						</ul>
+					</div>
+					<div class="col-md-4 contact" style="float: right;">
+						<h4>Contact Info</h4>
+						<p>IIIT Sri City, Chittoor</p>
+						<ul>
+							<li><i class="fa fa-phone"></i>+91 96967 88599</li>
+							<li><a href="mailto:safesky.by.vishist@gmail.com"><i
+										class="fa fa-envelope-o"></i>safesky.by.vishist@gmail.com</a></li>
+							<li><i class="fa fa-home"></i>IIIT Sri City, 630, Gnan Marg Sri City, Sathyavedu, Andhra
+								Pradesh, 517646</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-12">
+				<div class="pull-left copyRights">Copyright &copy 2023 All Rights Reserved by Team Vishist</div>
+			</div>
+			</div>
+		</footer>
+
+		<a href="#top" class="topHome"><i class="fa fa-chevron-up fa-2x"></i></a>
+		<script src="https://kit.fontawesome.com/76efa9e3c8.js" crossorigin="anonymous"></script>
+		<script src="js/modernizr-latest.js"></script>
+		<script src="js/overlay.js"></script>
+		<script src="js/jquery-1.8.2.min.js" type="text/javascript"></script>
+		<script src="js/bootstrap.min.js" type="text/javascript"></script>
+		<script src="js/jquery.isotope.min.js" type="text/javascript"></script>
+		<script src="js/jquery.fancybox.pack.js" type="text/javascript"></script>
+		<script src="js/jquery.nav.js" type="text/javascript"></script>
+		<script src="js/jquery.cslider.js" type="text/javascript"></script>
+		<script src="js/custom.js" type="text/javascript"></script>
+		<script src="jquery.min.js" type="text/javascript"></script>
+		<script src="search.js" type="text/javascript"></script>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+		<script src="api/contact.js"></script>
+		<script src="api/imageRecognition.js"></script>
+		<script src="api/weather.js"></script>
+		<script src="api/aqi.js"></script>
+		<script src="api/app.py"></script>
+		<script src="https://cdn.botpress.cloud/webchat/v1/inject.js"></script>
+		<script>
+			window.botpressWebChat.init({
+				"composerPlaceholder": "Chat with SkyBot",
+				"botConversationDescription": "This chatbot was built for SafeSky",
+				"botId": "424995ae-e260-4991-9e5e-d336c91e04b1",
+				"hostUrl": "https://cdn.botpress.cloud/webchat/v1",
+				"messagingUrl": "https://messaging.botpress.cloud",
+				"clientId": "424995ae-e260-4991-9e5e-d336c91e04b1",
+				"webhookId": "abd8e177-1bb3-4012-a26d-aad732132a24",
+				"useSessionStorage": true,
+				"lazySocket": true,
+				"showTimestamp": true,
+				"closeOnEscape": true,
+				"themeName": "prism",
+				"frontendVersion": "v1",
+				"showPoweredBy": true,
+				"theme": "prism",
+				"themeColor": "#80B421"
+			});
+		</script>
+</body>
+
+</html>
